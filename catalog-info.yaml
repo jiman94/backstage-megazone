@@ -1,0 +1,26 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: megazone-IDP
+  title: megazone-IDP
+  description: |
+    megazone-IDP
+  links:
+    - title: GitHub
+      url: https://github.com/jiman94/backstage-megazone
+  annotations:
+    backstage.io/techdocs-ref: dir:.
+    backstage-megazone.backstage.io/techdocs-builder: local
+    backstage.io/managed-by-location: url:https://github.com/jiman94/backstage-megazone/blob/main/catalog-info.yaml
+    github.com/project-slug: megazone/backstage-megazone
+    backstage.io/kubernetes-id: backstage
+    nexus-repository-manager/docker.image-name: backstage
+    argocd/app-name: backstage
+spec:
+  type: service
+  system: megazone-idp
+  owner: devops
+  lifecycle: production
+  dependsOn:
+    - resource:argocd
+    - resource:github

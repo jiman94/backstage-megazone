@@ -1,0 +1,32 @@
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: jiman94
+spec:
+  memberOf: [architect]
+  profile:
+    displayName: jmryu
+    email: jmryu@mz.co.kr
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: jiman94
+spec:
+  memberOf: [devops]
+  profile:
+    displayName: jmryu
+    email: jmryu@mz.co.kr
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: jiman94
+spec:
+  memberOf: [developer]
+  profile:
+    displayName: jmryu
+    email: jmryu@mz.co.kr
