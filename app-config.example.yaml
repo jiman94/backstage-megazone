@@ -1,71 +1,40 @@
 app:
-  title: megaonze IDP
+  title: 메가존 IDP
   baseUrl: http://localhost:3000
 
-organization:
-  name: megaonze
-
 backend:
+  # Required for authentication. This secret is shared by all backend plugins.
+  # See https://backstage.io/docs/auth/service-to-service-auth for
+  # information on the format
+  # auth:
+  #   keys:
+  #     - secret: ${BACKEND_AUTH_SECRET}
+  # Note that the baseUrl should be the URL that the browser and other clients
+  # should use when communicating with the backend, i.e. it needs to be
+  # reachable not just from within the backend host, but from all of your
+  # callers. When its value is "http://localhost:7007", it's strictly private
+  # and can't be reached by others.
   baseUrl: http://localhost:7007
+  # The listener can also be expressed as a single <host>:<port> string. In this case we bind to
+  # all interfaces, the most permissive setting. The right value depends on your specific deployment.
   listen:
     port: 7007
+    # Uncomment the following host directive to bind to specific interfaces
+    # host: 127.0.0.1
   csp:
     connect-src:
       - "'self'"
       - 'http:'
       - 'https:'
+    # Content-Security-Policy directives follow the Helmet format: https://helmetjs.github.io/#reference
+    # Default Helmet Content-Security-Policy values can be removed by setting the key to false
   cors:
     origin: http://localhost:3000
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
-
-
-
-# PG 
-  # database:
-  #   client: pg
-  #   connection:
-  #     host: ${POSTGRES_HOST}
-  #     password: ${POSTGRES_PASSWORD}
-  #     port: ${POSTGRES_PORT}
-  #     user: ${POSTGRES_USER}
-
-
   database:
     client: better-sqlite3
     connection: ':memory:'
-
-
-kubernetes:
-  serviceLocatorMethod:
-    type: multiTenant
-  clusterLocatorMethods:
-    - type: config
-      clusters:
-        # k3s
-        - url: ${K8S_K3S_URL}   
-          name: k3s
-          authProvider: serviceAccount
-          skipTLSVerify: true
-          skipMetricsLookup: false
-          serviceAccountToken: ${K8S_K3S_TOKEN}
-        
-        # minikube
-        # - url: ${K8S_MINIKUBE_URL} 
-        #   name: minikube
-        #   authProvider: serviceAccount
-        #   skipTLSVerify: true
-        #   skipMetricsLookup: false
-        #   serviceAccountToken: ${K8S_MINIKUBE_TOKEN}
-        
-        # kind
-        # - url: ${K8S_KIND_URL}  
-        #   name: kind-kind
-        #   authProvider: serviceAccount
-        #   skipTLSVerify: true
-        #   skipMetricsLookup: true
-        #   serviceAccountToken: ${K8S_KIND_TOKEN}
-
 
 
 catalog:
@@ -75,28 +44,49 @@ catalog:
   rules:
     - allow: [Component, System, Group, Resource, Location, Template, API]
   locations:
-  # Note: integrations.github[].apps must be correctly configured to read GitHub locations
-    - type: url
-      target: https://github.com/jiman94/backstage-megazone/blob/main/catalog-entities/all.yaml
-    - type: url
-      target: https://github.com/jiman94/backstage-megazone/blob/main/catalog-entities/templates.yaml
-    - type: url
-      target: https://github.com/jiman94/backstage-megazone/blob/main/catalog-entities/users.yaml
+  # Local example data, file locations are relative to the backend process, typically `packages/backend`
+    - type: file
+      target: ../../catalog-entities/all.yaml
+    - type: file
+      target: ../../catalog-entities/users.yaml
       rules:
         - allow: [User]
 
-
-  # --------------------------
-  # for Local
-  # --------------------------
-  # Local example data, file locations are relative to the backend process, typically `packages/backend`
-
     # - type: file
-    #   target: ../../catalog-entities/all.yaml
-    # - type: file
-    #   target: ../../catalog-entities/users.yaml
+    #   target: ../../catalog-entities/template/template.yaml
     #   rules:
-    #     - allow: [User]
+    #     - allow: [Template]
+    # - type: file
+    #   target: ../../catalog-entities/org.yaml
+    #   rules:
+    #     - allow: [User, Group]
+
+
+
+kubernetes:
+  serviceLocatorMethod:
+    type: multiTenant
+  clusterLocatorMethods:
+    - type: config
+      clusters:
+        - url: ${K8S_MINIKUBE_URL} # minikube
+          name: minikube
+          authProvider: serviceAccount
+          skipTLSVerify: true
+          skipMetricsLookup: false
+          serviceAccountToken: ${K8S_MINIKUBE_TOKEN}
+        - url: ${K8S_KIND_URL}  # kind
+          name: kind-kind
+          authProvider: serviceAccount
+          skipTLSVerify: true
+          skipMetricsLookup: true
+          serviceAccountToken: ${K8S_KIND_TOKEN}
+        - url: ${K8S_K3S_URL}   # k3s
+          name: k3s
+          authProvider: serviceAccount
+          skipTLSVerify: true
+          skipMetricsLookup: false
+          serviceAccountToken: ${K8S_K3S_TOKEN}
 
 integrations:
   github:
@@ -140,15 +130,15 @@ proxy:
   #     changeOrigin: true
 
 # Reference documentation http://backstage.io/docs/features/techdocs/configuration
-# Note: After experimenting with basic setup, use CI/CD to generate docs and an external cloud storage when deploying TechDocs for production use-case.
-# 참고: 기본 설정을 실험해 본 후, 운영시 TechDocs를 배포할 때 CI/CD를 사용하여 문서와 외부 클라우드 저장소를 생성하세요.
+# Note: After experimenting with basic setup, use CI/CD to generate docs
+# and an external cloud storage when deploying TechDocs for production use-case.
 # https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
 techdocs:
   builder: 'local' # Alternatives - 'external'
   #builder: 'external' # Alternatives - 'external'
   generator:
-    runIn: 'docker' # Alternatives - 'local'
-    #runIn: 'local' # Alternatives - 'local'
+    #runIn: 'docker' # Alternatives - 'local'
+    runIn: 'local' # Alternatives - 'local'
   publisher:
     type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
 
@@ -195,6 +185,3 @@ sonarqube:
     - name: specialProject
       baseUrl: ${SONARQUBE_URL}
       apiKey: ${SONARQUBE_TOKEN}
-
-
-

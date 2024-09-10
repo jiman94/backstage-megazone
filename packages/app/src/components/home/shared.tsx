@@ -22,8 +22,23 @@ export const tools = [
     icon: <TemplateBackstageLogoIcon />,
   },
   {
-    url: 'https://github.com/jiman94/backstage-megazone',
+    url: 'https://github.com/oscka/backstage-custom',
     label: 'GitHub',
     icon: <TemplateBackstageLogoIcon />,
-  }
+  },
+  {
+    url: 'http://192.168.41.50:9000',
+    label: 'SonarQube',
+    icon: <TemplateBackstageLogoIcon />,
+  },
+  {
+    url: 'https://nexus-oscka.aimegazone.com',
+    label: 'nexus',
+    icon: <TemplateBackstageLogoIcon />,
+  },
+  {
+    url: 'https://argocd-oscka.aimegazone.com/',
+    label: 'argocd',
+    icon: <TemplateBackstageLogoIcon />,
+  },
 ];

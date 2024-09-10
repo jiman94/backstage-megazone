@@ -1,105 +1,38 @@
-organization:
-  name: 메가존
-
 app:
-  title: 메가존 IDP
   baseUrl: https://backstage.aimegazone.com
 
 backend:
   baseUrl: https://backstage.aimegazone.com
-  listen:
-    port: 7007
-  csp:
-    connect-src:
-      - "'self'"
-      - 'http:'
-      - 'https:'
+  listen: ':7007'
   cors:
-    origin: backstage.aimegazone.com
+    origin: https://backstage.aimegazone.com
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
-
-# PG 
+    
   database:
     client: pg
+    #connection: ${DATABASE_URL}
     connection:
       host: ${POSTGRES_HOST}
-      password: ${POSTGRES_PASSWORD}
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
-
-# sqlite3 사용시 
-#  database:
-#    client: better-sqlite3
-#    connection: ':memory:'
-  # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
-  # workingDirectory: /Temp
-
-
-catalog:
-  import:
-    entityFilename: catalog-info.yaml
-    pullRequestBranchName: backstage-integration
-  rules:
-    - allow: [Component, System, Group, Resource, Location, Template, API]
-  locations:
-  # Note: integrations.github[].apps must be correctly configured to read GitHub locations
-    - type: url
-      target: https://github.com/jiman94/backstage-megazone/blob/main/catalog-entities/all.yaml
-    - type: url
-      target: https://github.com/jiman94/backstage-megazone/blob/main/catalog-entities/templates.yaml
-    - type: url
-      target: https://github.com/jiman94/backstage-megazone/blob/main/catalog-entities/users.yaml
-      rules:
-        - allow: [User]
-
-  # --------------------------
-  # for Local
-  # --------------------------
-  
-    # - type: file
-    #   target: ../../catalog-entities/all.yaml
-    # - type: file
-    #   target: ../../catalog-entities/users.yaml
-    #   rules:
-    #     - allow: [User]
-
-integrations:
-  github:
-    - host: github.com
-      token: ${GITHUB_TOKEN}
-
-proxy:
-  endpoints:
-
-techdocs:
-  builder: 'local' # Alternatives - 'external'
-  #builder: 'external' # Alternatives - 'external'
-  generator:
-    runIn: 'docker' # Alternatives - 'local'
-    #runIn: 'local' # Alternatives - 'local'
-  publisher:
-    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.
+      password: ${POSTGRES_PASSWORD}
 
 auth:
-  # see https://backstage.io/docs/auth/ to learn about auth providers
   environment: production
   providers:
     github:
-      development:
+      production:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 
-        ## uncomment if using GitHub Enterprise
-        # enterpriseInstanceUrl: ${AUTH_GITHUB_ENTERPRISE_INSTANCE_URL}
-
-scaffolder:
-  # see https://backstage.io/docs/features/software-templates/configuration for software template options
-
-# Plugin: Argocd
-
-# Plugin: Jenkins
-
-# Plugin: SonarQube
-
-
+# Reference documentation http://backstage.io/docs/features/techdocs/configuration
+# Note: After experimenting with basic setup, use CI/CD to generate docs and an external cloud storage when deploying TechDocs for production use-case.
+# 참고: 기본 설정을 실험해 본 후, 운영시 TechDocs를 배포할 때 CI/CD를 사용하여 문서와 외부 클라우드 저장소를 생성하세요.
+# https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
+techdocs:
+  builder: 'local' # Alternatives - 'external'
+  generator:
+    runIn: 'local' # Alternatives - 'docker'
+  publisher:
+    type: 'local' # Alternatives - 'googleGcs' or 'awsS3'. Read documentation for using alternatives.

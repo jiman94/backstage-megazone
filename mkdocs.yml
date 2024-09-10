@@ -1,6 +1,6 @@
 site_name: 'Backstage Custom'
 site_description: 'Main documentation for Backstage features and platform APIs'
-repo_url: https://github.com/jiman94/backstage-megazone
+repo_url: https://github.com/oscka/backstage-custom
 edit_uri: edit/main/docs
 
 

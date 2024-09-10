@@ -113,3 +113,18 @@ backend:
 
 # 
 3.38.164.124
+
+
+# 컴포넌트 등록 
+https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/components/petstore-component.yaml
+
+https://github.com/backstage/backstage/tree/master/packages/catalog-model/examples/components
+
+
+# 스웨거 주소 
+https://github.com/jiman94/backstage-megazone/tree/main/catalog-entities/apis/
+
+
+
+
+

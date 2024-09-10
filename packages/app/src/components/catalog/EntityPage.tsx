@@ -52,14 +52,33 @@ import {
 } from '@backstage/catalog-model';
 import { TechDocsAddons } from '@backstage/plugin-techdocs-react';
 import { ReportIssue } from '@backstage/plugin-techdocs-module-addons-contrib';
-
+import {
+  EntityJenkinsContent,
+  EntityLatestJenkinsRunCard,
+  isJenkinsAvailable,
+} from '@backstage/plugin-jenkins';
+import { 
+  EntitySonarQubeCard,
+  isSonarQubeAvailable,
+} from '@backstage/plugin-sonarqube';
+import {
+  isNexusRepositoryManagerAvailable,
+  NexusRepositoryManagerPage,
+} from '@janus-idp/backstage-plugin-nexus-repository-manager';
+import {
+  isArgocdAvailable,
+  EntityArgoCDOverviewCard,
+  EntityArgoCDContent,
+} from '@roadiehq/backstage-plugin-argo-cd';
 import { EntityTodoContent } from '@backstage/plugin-todo';
 import {
   isGithubActionsAvailable,
   EntityGithubActionsContent,
   EntityRecentGithubActionsRunsCard,
 } from '@backstage/plugin-github-actions';
-
+import { 
+  EntityKubernetesContent,
+} from '@backstage/plugin-kubernetes';
 import { EntityGithubPullRequestsContent } from '@roadiehq/backstage-plugin-github-pull-requests';
 import { TopologyPage } from '@janus-idp/backstage-plugin-topology';
 
@@ -70,6 +89,58 @@ const techdocsContent = (
     </TechDocsAddons>
   </EntityTechdocsContent>
 );
+
+const ciCard = (
+  <EntitySwitch>
+    <EntitySwitch.Case if={isJenkinsAvailable}>
+      <Grid item sm={6}>
+        <EntityLatestJenkinsRunCard branch="" variant="gridItem" />
+      </Grid>
+    </EntitySwitch.Case>
+    <EntitySwitch.Case if={isGithubActionsAvailable}>
+      <Grid item sm={6}>
+        <EntityRecentGithubActionsRunsCard limit={4} variant="gridItem" />
+      </Grid>
+    </EntitySwitch.Case>
+  </EntitySwitch>
+);
+
+const jenkinsContent = (
+  <EntitySwitch>
+    <EntitySwitch.Case if={isJenkinsAvailable}>
+      <EntityJenkinsContent/>
+    </EntitySwitch.Case>
+</EntitySwitch>
+);
+
+
+// const ciContent = (
+//   <EntitySwitch>
+//     <EntitySwitch.Case if={isJenkinsAvailable}>
+//       <EntityJenkinsContent/>
+//     </EntitySwitch.Case>
+//     <EntitySwitch.Case if={isGithubActionsAvailable}>
+//       <EntityGithubActionsContent />
+//     </EntitySwitch.Case>
+//     <EntitySwitch.Case>
+//       <EmptyState
+//         title="No CI/CD available for this entity"
+//         missing="info"
+//         description="You need to add an annotation to your component if you want to enable CI/CD for it. You can read more about annotations in Backstage by clicking the button below."
+//         action={
+//           <Button
+//             variant="contained"
+//             color="primary"
+//             href="https://backstage.io/docs/features/software-catalog/well-known-annotations"
+//           >
+//             Read more
+//           </Button>
+//         }
+//       />
+//     </EntitySwitch.Case>
+//   </EntitySwitch>
+// );
+
 
 
 const entityWarningContent = (
@@ -100,7 +171,6 @@ const entityWarningContent = (
   </>
 );
 
-
 const overviewContent = (
   <Grid container spacing={3} alignItems="stretch">
     {entityWarningContent}
@@ -109,10 +179,27 @@ const overviewContent = (
       <EntityLinksCard />
     </Grid>
 
+    <EntitySwitch>
+      <EntitySwitch.Case if={e => Boolean(isArgocdAvailable(e))}>
+        <Grid item md={8} >
+          <EntityArgoCDOverviewCard />
+        </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
 
     <Grid item md={6}>
       <EntityAboutCard variant="gridItem" />
     </Grid>
+
+    <EntitySwitch>
+      <EntitySwitch.Case if={e => Boolean(isSonarQubeAvailable(e))}>
+      <Grid item md={6}>
+        <EntitySonarQubeCard variant="gridItem" />
+      </Grid>
+      </EntitySwitch.Case>
+    </EntitySwitch>
+
+    {ciCard}
 
     <Grid item md={6} xs={12}>
       <EntityCatalogGraphCard variant="gridItem" height={400} />
@@ -133,8 +220,30 @@ const serviceEntityPage = (
       <EntityGithubActionsContent />
     </EntityLayout.Route>
 
+    <EntityLayout.Route path="/jenkins" title="Jenkins" if={isJenkinsAvailable}>
+      {jenkinsContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route if={e => Boolean(isArgocdAvailable(e))}
+       path="/argocd" title="ArgoCD">
+      <EntityArgoCDContent />
+    </EntityLayout.Route>
+
+    {/* build */}
+    <EntityLayout.Route
+      if={isNexusRepositoryManagerAvailable}
+      path="/build-artifacts" title="Build Artifacts">
+      <NexusRepositoryManagerPage />
+    </EntityLayout.Route>
+
     <EntityLayout.Route path="/topology" title="Topology">
       <TopologyPage />
+    </EntityLayout.Route>
+
+    <EntityLayout.Route 
+      if={isNexusRepositoryManagerAvailable}
+      path="/kubernetes" title="Kubernetes">
+      <EntityKubernetesContent refreshIntervalMs={30000} />
     </EntityLayout.Route>
     
     <EntityLayout.Route path="/todo" title="Todo">
@@ -175,6 +284,10 @@ const websiteEntityPage = (
   <EntityLayout>
     <EntityLayout.Route path="/" title="Overview">
       {overviewContent}
+    </EntityLayout.Route>
+
+    <EntityLayout.Route path="/jekins" title="Jenkins">
+      {jenkinsContent}
     </EntityLayout.Route>
 
     <EntityLayout.Route path="/dependencies" title="Dependencies">
