@@ -23,13 +23,19 @@ backend:
 
 
 # PG 
+  # database:
+  #   client: pg
+  #   connection:
+  #     host: ${POSTGRES_HOST}
+  #     password: ${POSTGRES_PASSWORD}
+  #     port: ${POSTGRES_PORT}
+  #     user: ${POSTGRES_USER}
+
+
   database:
-    client: pg
-    connection:
-      host: ${POSTGRES_HOST}
-      password: ${POSTGRES_PASSWORD}
-      port: ${POSTGRES_PORT}
-      user: ${POSTGRES_USER}
+    client: better-sqlite3
+    connection: ':memory:'
+
 
   # database:
   #   client: better-sqlite3
