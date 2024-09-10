@@ -31,6 +31,17 @@ backend:
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
 
+# sqlite3 사용시 
+
+  # database:
+  #   client: pg
+  #   #connection: ${DATABASE_URL}
+  #   connection:
+  #     host: ${POSTGRES_HOST}
+  #     port: ${POSTGRES_PORT}
+  #     user: ${POSTGRES_USER}
+  #     password: ${POSTGRES_PASSWORD}
+
   # database:
   #   client: better-sqlite3
   #   connection: ':memory:'
@@ -42,7 +53,6 @@ backend:
   #  connection: ':memory:'
   # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
   # workingDirectory: /Temp
-
 
 
 catalog:
