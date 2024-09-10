@@ -50,8 +50,9 @@ kind: Group
 
 
 
-```sh
+# 로컬 실행 
 
+```sh
 # yarn 으로 dependency 설치
 
 yarn install
@@ -62,7 +63,53 @@ yarn install
 ```
 
 
-# Test 
+# Github 연동 
 
 http://localhost:3000
 http://localhost:7007/api/auth/github/handler/frame
+
+http://localhost:3000/settings/auth-providers
+
+# 가이드 
+https://backstage.io/docs/auth/atlassian/provider/
+https://backstage.io/docs/auth/bitbucket/provider
+
+
+
+argocd.aimegazone.com
+
+backstage.aimegazone.com
+arn:aws:acm:ap-northeast-2:854013278161:certificate/da2d1c66-fbc5-49ca-8222-20e3de6700cf
+
+
+arn:aws:iam::854013278161:role/myAmazonEKSClusterRole
+arn:aws:iam::aws:policy/AmazonEKSClusterPolicy
+
+
+
+
+# backstage-front 
+* /usr/share/nginx/html/static
+* app-config.development.yaml
+
+```yaml 
+root@aa-backstage-frontend-6c56795df4-mb868:/usr/share/nginx/html/static# cat app-config.development.yaml
+backend:
+  lighthouseHostname: "aa-backstage-lighthouse"
+  listen:
+      port: 7000
+  database:
+    client: "pg"
+    connection:
+      host: "postgresql"
+      port: "5432\n"
+      user: "pgsql"
+      database: "backstage_plugin_catalog"
+      ssl:
+        rejectUnauthorized: "false"
+        ca: "/etc/postgresql/ca.crt"
+```
+
+
+# 
+3.38.164.124

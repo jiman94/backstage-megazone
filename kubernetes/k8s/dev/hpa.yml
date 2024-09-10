@@ -1,13 +1,13 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: dev-api-server
-  namespace: abc
+  name: backstage
+  namespace: backstage
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: dev-api-server
+    name: backstage
   minReplicas: 1
   maxReplicas: 2
   metrics:

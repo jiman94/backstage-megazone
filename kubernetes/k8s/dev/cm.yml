@@ -2,13 +2,9 @@ kind: ConfigMap
 apiVersion: v1
 metadata:
   name: dev-api-config
-  namespace: labide
+  namespace: backstage
 data:
   application.yaml: |-
-    server:
-      servlet:
-        context-path: /api
-      port: 8088
     spring:
       profiles:
         active: dev 

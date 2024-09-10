@@ -21,6 +21,18 @@ backend:
   # This is for local development only, it is not recommended to use this in production
   # The production database configuration is stored in app-config.production.yaml
 
+
+# PG 
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      password: ${POSTGRES_PASSWORD}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+
+# sqlite3 사용시 
+
   # database:
   #   client: pg
   #   #connection: ${DATABASE_URL}
@@ -30,9 +42,9 @@ backend:
   #     user: ${POSTGRES_USER}
   #     password: ${POSTGRES_PASSWORD}
 
-  database:
-    client: better-sqlite3
-    connection: ':memory:'
+  # database:
+  #   client: better-sqlite3
+  #   connection: ':memory:'
 
 # sqlite3 사용시 
 

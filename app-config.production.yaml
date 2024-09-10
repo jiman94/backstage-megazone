@@ -1,12 +1,12 @@
-app:
-  title: 메가존 IDP
-  baseUrl: http://localhost:3000
-
 organization:
   name: 메가존
 
+app:
+  title: 메가존 IDP
+  baseUrl: https://backstage.aimegazone.com
+
 backend:
-  baseUrl: http://localhost:7007
+  baseUrl: https://backstage.aimegazone.com
   listen:
     port: 7007
   csp:
@@ -15,25 +15,23 @@ backend:
       - 'http:'
       - 'https:'
   cors:
-    origin: http://localhost:3000
+    origin: backstage.aimegazone.com
     methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
     credentials: true
-  # This is for local development only, it is not recommended to use this in production
-  # The production database configuration is stored in app-config.production.yaml
 
-  #database:
-  #  client: pg
-    #connection: ${DATABASE_URL}
-  #  connection:
-  #    host: ${POSTGRES_HOST}
-  #    port: ${POSTGRES_PORT}
-  #    user: ${POSTGRES_USER}
-  #    password: ${POSTGRES_PASSWORD}
+# PG 
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      password: ${POSTGRES_PASSWORD}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
 
 # sqlite3 사용시 
-  database:
-    client: better-sqlite3
-    connection: ':memory:'
+#  database:
+#    client: better-sqlite3
+#    connection: ':memory:'
   # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
   # workingDirectory: /Temp
 
@@ -55,12 +53,10 @@ catalog:
       rules:
         - allow: [User]
 
-
   # --------------------------
   # for Local
   # --------------------------
-  # Local example data, file locations are relative to the backend process, typically `packages/backend`
-
+  
     # - type: file
     #   target: ../../catalog-entities/all.yaml
     # - type: file
@@ -71,29 +67,10 @@ catalog:
 integrations:
   github:
     - host: github.com
-      # This is a Personal Access Token or PAT from GitHub. You can find out how to generate this token, and more information
-      # about setting up the GitHub integration here: https://backstage.io/docs/getting-started/configuration#setting-up-a-github-integration
       token: ${GITHUB_TOKEN}
-    ### Example for how to add your GitHub Enterprise instance using the API:
-    # - host: ghe.example.net
-    #   apiBaseUrl: https://ghe.example.net/api/v3
-    #   token: ${GHE_TOKEN}
 
 proxy:
   endpoints:
-  # Plugin: Nexus Repository Manager
-  # Plugin: Argocd
-  ### Example for how to add a proxy endpoint for the frontend.
-  ### A typical reason to do this is to handle HTTPS and CORS for internal services.
-  # endpoints:
-  #   '/test':
-  #     target: 'https://example.com'
-  #     changeOrigin: true
-
-# Reference documentation http://backstage.io/docs/features/techdocs/configuration
-# Note: After experimenting with basic setup, use CI/CD to generate docs and an external cloud storage when deploying TechDocs for production use-case.
-# 참고: 기본 설정을 실험해 본 후, 운영시 TechDocs를 배포할 때 CI/CD를 사용하여 문서와 외부 클라우드 저장소를 생성하세요.
-# https://backstage.io/docs/features/techdocs/how-to-guides#how-to-migrate-from-techdocs-basic-to-recommended-deployment-approach
 
 techdocs:
   builder: 'local' # Alternatives - 'external'

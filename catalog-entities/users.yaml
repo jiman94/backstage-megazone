@@ -10,6 +10,17 @@ spec:
   profile:
     displayName: jmryu
     email: jmryu@mz.co.kr
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: csheo
+spec:
+  memberOf: [architect]
+  profile:
+    displayName: csheo
+    email: csheo@mz.co.kr
 ---
 apiVersion: backstage.io/v1alpha1
 kind: User

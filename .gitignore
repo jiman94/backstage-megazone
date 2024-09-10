@@ -8,7 +8,12 @@
 3.image_build_push.sh
 build-local.sh
 Dockerfile
-
+run_docker.sh
+start_local.sh
+shell
+kubernetes
+docker
+Dockerfile.* 
 
 # Logs
 logs

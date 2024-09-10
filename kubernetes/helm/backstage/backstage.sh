@@ -9,7 +9,21 @@
 
 
 
-helm upgrade --install -f values.yaml aa backstage/backstage -n backstage
+helm upgrade --install -f backstage-values.yaml aa backstage/backstage -n backstage
+
+helm uninstall aa 
+
+####
+
+helm install aa deliveryhero/backstage -n backstage
+
+helm install aa deliveryhero/backstage -f backstage-values.yaml -n backstage
+
+--- 
+
+helm uninstall aa  -n backstage
+
+helm upgrade --install -f backstage-values.yaml aa deliveryhero/backstage -n backstage
 
 
 
